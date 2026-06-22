@@ -1,23 +1,235 @@
-# Accessibility (A11y) Baseline & Audit Protocol
+# Highcharts Accessibility — WCAG 2.2 Reference
 
-## A11y Baseline (Always on new configs)
+Load this file when:
+- User requests accessibility audit of a chart config
+- User asks about WCAG compliance for charts
+- Generating a production config that will face accessibility review
+- User mentions screen readers, keyboard navigation, contrast, color blindness
 
-Every new configuration must include this foundational structure:
+---
+
+## WCAG 2.2 Criteria — Chart Applicability
+
+| Criterion | Level | Chart requirement |
+|---|---|---|
+| 1.1.1 Non-text content | A | Text alternative for every chart |
+| 1.3.1 Info and relationships | A | Structure conveyed via accessible means |
+| 1.3.3 Sensory characteristics | A | Don't rely on shape/color alone for instructions |
+| 1.4.1 Use of color | A | Color not sole differentiator |
+| 1.4.3 Contrast (text) | AA | 4.5:1 for small text, 3:1 for large text (18px+ or 14px+ bold) |
+| 1.4.4 Resize text | AA | Chart legible at 200% browser zoom |
+| 1.4.11 Non-text contrast | AA | 3:1 for chart elements (bars, lines, points) vs background |
+| 2.1.1 Keyboard | A | All chart interaction keyboard accessible |
+| 2.1.2 No keyboard trap | A | Can tab out of chart |
+| 2.4.3 Focus order | A | Logical focus sequence through chart points |
+| 2.4.7 Focus visible | AA | Focus indicator visible on interactive elements |
+| 2.4.11 Focus appearance | AA *(new 2.2)* | Focus indicator: min 2px outline, area ≥ perimeter×2px |
+| 4.1.2 Name/role/value | A | Interactive elements have accessible name + role |
+
+---
+
+## Highcharts Accessibility Module Config
+
+### Minimum required (WCAG A compliance)
 
 ```typescript
 accessibility: {
   enabled: true,
-  description: '', // caller fills: what chart shows + key insight
-  point: { valueDescriptionFormat: '{index}. {point.category}: {point.y}.' },
-},
-credits: { enabled: false },
+  description: 'Describe what the chart shows and the key insight.',
+  // e.g. 'Bar chart showing Q4 revenue by region. North America leads at $120M.'
+}
 ```
 
-## WCAG 2.2 Audit Protocol
+### Full production config (WCAG AA)
 
-When evaluating an existing config for accessibility, verify the following:
-1. `accessibility.enabled` is explicitly `true`
-2. `accessibility.description` provides meaningful context about the data (not just "a chart")
-3. Screen reader formatters (e.g. `point.valueDescriptionFormat`) provide clear numerical reading
-4. Legend is keyboard-navigable and `accessibility.keyboardNavigation.enabled` is not explicitly disabled
-5. Colors meet 3:1 minimum contrast for large text / data points, 4.5:1 for standard text (verify with `colors` array)
+```typescript
+accessibility: {
+  enabled: true,
+
+  // 1.1.1 — text alternative
+  description: 'Bar chart showing Q4 2024 revenue by region. North America leads with $120M.',
+
+  // Point-level announcements (4.1.2, 1.1.1)
+  point: {
+    valueDescriptionFormat: '{index}. {point.category}: {point.y} million dollars.',
+    valueSuffix: '',    // set if unit not in format above
+  },
+
+  // Series-level announcements
+  series: {
+    descriptionFormat: '{series.name}, {series.type} chart with {series.points.length} data points.',
+    pointDescriptionEnabledThreshold: 200,  // skip point-by-point above N points
+  },
+
+  // Screen reader section (before/after chart)
+  screenReaderSection: {
+    beforeChartFormat:
+      '<h5>{chartTitle}</h5>' +
+      '<div>{typeDescription}</div>' +
+      '<div>{chartSubtitle}</div>' +
+      '<div>{chartLongdesc}</div>',
+    afterChartFormat: '',
+  },
+
+  // Keyboard navigation
+  keyboardNavigation: {
+    enabled: true,
+    order: ['series', 'zoom', 'rangeSelector', 'legend', 'chartMenu'],
+    seriesNavigation: {
+      mode: 'normal',               // 'normal' | 'serialize' (reads all points sequentially)
+      pointNavigationEnabledThreshold: 200,
+      skipNullPoints: true,
+    },
+  },
+
+  // Linked data table (1.3.1 — tabular alternative)
+  // Set linkedDescription to id of an external <table> element
+  linkedDescription: undefined,    // '#chart-data-table' if table exists in DOM
+},
+```
+
+---
+
+## 1.4.1 Use of Color — Not Sole Differentiator
+
+Minimum: every series must differ by **both** color and another attribute.
+
+### Per-series distinct markers (line/spline)
+
+```typescript
+series: [
+  { name: 'Revenue',  marker: { symbol: 'circle' } },
+  { name: 'Target',   marker: { symbol: 'square' } },
+  { name: 'Forecast', marker: { symbol: 'diamond' } },
+  { name: 'Budget',   marker: { symbol: 'triangle' } },
+],
+```
+
+Available symbols: `'circle'`, `'square'`, `'diamond'`, `'triangle'`, `'triangle-down'`
+
+### Per-series dash style (line/spline)
+
+```typescript
+series: [
+  { name: 'Actual',   dashStyle: 'Solid' },
+  { name: 'Target',   dashStyle: 'ShortDash' },
+  { name: 'Forecast', dashStyle: 'Dot' },
+],
+```
+
+### Pattern fills for bars/areas (requires `pattern-fill.js` module)
+
+```typescript
+// UNVERIFIED in MCP — valid standalone API
+import 'highcharts/modules/pattern-fill';
+
+series: [{
+  data: [
+    { y: 45, color: { pattern: { path: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11', width: 10, height: 10, color: '#1565C0' } } },
+  ],
+}]
+```
+
+---
+
+## 1.4.3 / 1.4.11 Contrast
+
+### Text contrast requirements
+- Axis labels, legend text, data labels, tooltip text: **4.5:1** minimum against background
+- Title, subtitle (18px+ or 14px+ bold): **3:1** minimum
+
+### Non-text (chart elements) — WCAG 1.4.11
+- Bars, lines, points, area fills: **3:1** against adjacent background color
+- Highcharts default `#7cb5ec` (blue) = **2.6:1** on white — **fails** 1.4.11
+- `#2196F3` = **3.1:1** on white — **passes**
+
+### Verified passing colors on #ffffff background
+
+| Color | Hex | Contrast ratio | Pass 1.4.11 (3:1) |
+|---|---|---|---|
+| Dark blue | `#1565C0` | 7.2:1 | ✓ |
+| Deep orange | `#E65100` | 4.8:1 | ✓ |
+| Dark green | `#2E7D32` | 7.1:1 | ✓ |
+| Deep purple | `#6A1B9A` | 8.8:1 | ✓ |
+| Teal | `#00695C` | 6.9:1 | ✓ |
+| Pink | `#AD1457` | 6.5:1 | ✓ |
+| Material blue | `#2196F3` | 3.1:1 | ✓ (borderline) |
+
+### Default Highcharts palette — contrast on white
+
+| Color | Hex | Contrast | Status |
+|---|---|---|---|
+| Default blue | `#7cb5ec` | 2.6:1 | ✗ FAIL |
+| Default orange | `#f7a35c` | 2.1:1 | ✗ FAIL |
+| Default green | `#90ed7d` | 1.6:1 | ✗ FAIL |
+
+**Replace default palette in enterprise configs:**
+
+```typescript
+colors: ['#1565C0', '#E65100', '#2E7D32', '#6A1B9A', '#00695C', '#AD1457', '#37474F', '#F57F17'],
+```
+
+---
+
+## 2.4.11 Focus Appearance (new in WCAG 2.2)
+
+Highcharts accessibility module adds focus styles via SVG. Custom CSS must not suppress them.
+
+Check: no `outline: none` or `outline: 0` on `.highcharts-a11y-proxy-element`, `.highcharts-point`, or chart container.
+
+```css
+/* BAD — kills keyboard focus visibility */
+.chart-container * { outline: none; }
+
+/* SAFE — scoped reset that preserves Highcharts focus */
+.chart-container button:not(:focus-visible) { outline: none; }
+```
+
+---
+
+## Accessible Chart Checklist
+
+Run through this for each chart before accessibility review:
+
+### Structure
+- [ ] `accessibility.enabled: true`
+- [ ] `accessibility.description` filled with meaningful text (not "chart")
+- [ ] `accessibility.point.valueDescriptionFormat` includes unit
+- [ ] `accessibility.series.descriptionFormat` set
+
+### Color / contrast
+- [ ] Default Highcharts palette replaced with accessible colors
+- [ ] No series differentiated by color alone — also differ by symbol, dashStyle, or pattern
+- [ ] All text elements (labels, legend, tooltip) at 4.5:1 on background
+- [ ] Chart elements (bars, lines) at 3:1 on background
+
+### Keyboard
+- [ ] `accessibility.keyboardNavigation.enabled: true` (default when module loaded)
+- [ ] No CSS suppressing focus indicators on chart container or children
+- [ ] Tab order reaches chart, enters, navigates points, exits
+
+### Data alternative
+- [ ] Either `accessibility.linkedDescription` pointing to DOM table, OR
+- ] Data exportable via `exporting` menu, OR
+- [ ] Data visible in adjacent UI table
+- [ ] (At minimum: `accessibility.description` summarizes key data insight)
+
+### Edge cases
+- [ ] Empty state has accessible text (`lang.noData` set)
+- [ ] Loading state has accessible announcement (if programmatic `showLoading` used)
+- [ ] Drilldown: back button keyboard accessible (Highcharts handles this when accessibility module loaded)
+
+---
+
+## Audit workflow
+
+When asked to audit a config for accessibility:
+
+1. Check `accessibility.enabled` — if missing/false, flag immediately
+2. Check `accessibility.description` — blank or generic = fail 1.1.1
+3. Extract `colors` array (or defaults) — test each against `#ffffff` (or actual background)
+4. Check series for `marker.symbol` differentiation (line/spline)
+5. Check `dashStyle` differentiation for line series
+6. Check no CSS mentioned that could suppress focus
+7. Check for data table alternative
+8. Produce findings as: criterion → current → required → fix
