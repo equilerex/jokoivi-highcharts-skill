@@ -1,0 +1,10 @@
+/* Requires external Highcharts CSS to be installed locally */
+/* Requires external Highcharts CSS to be installed locally */
+
+#csv {
+    display: none;
+}
+
+#dashboard-row-1 {
+    height: 200px;
+}

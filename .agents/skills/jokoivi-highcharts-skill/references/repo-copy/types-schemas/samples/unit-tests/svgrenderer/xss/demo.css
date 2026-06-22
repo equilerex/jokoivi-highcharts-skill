@@ -1,0 +1,6 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+#container {
+    width: 600px;
+    margin: 0 auto;
+}

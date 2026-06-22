@@ -1,0 +1,7 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+#grid-1,
+#grid-2 {
+    height: 600px;
+    padding: 8px;
+}

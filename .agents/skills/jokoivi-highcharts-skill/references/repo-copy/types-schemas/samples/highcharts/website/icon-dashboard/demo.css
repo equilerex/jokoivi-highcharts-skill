@@ -1,0 +1,270 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+:root,
+.highcharts-light {
+    --illo-green: var(--primitives-success-200);
+    --illo-purple: var(--primitives-brand-500);
+    --illo-accent-0: var(--primitives-neutral-0);
+    --illo-accent-50: var(--primitives-neutral-50);
+    --illo-accent-200: var(--primitives-neutral-200);
+    --illo-accent-800: var(--primitives-neutral-800);
+    --illo-brand-200: var(--primitives-brand-200);
+    --illo-brand-800: var(--primitives-brand-800);
+    --illo-background: var(--primitives-neutral-0);
+    --illo-lines: var(--primitives-neutral-100);
+    --illo-just-white: #fff;
+    --illo-just-black: #000;
+    --illo-accent-teal: #6699a1;
+}
+
+.highcharts-dark {
+    --illo-green: var(--primitives-success-300);
+    --illo-purple: var(--primitives-brand-500);
+    --illo-accent-0: var(--primitives-neutral-1000);
+    --illo-accent-50: var(--primitives-neutral-700);
+    --illo-accent-200: var(--primitives-neutral-500);
+    --illo-accent-800: var(--primitives-neutral-0);
+    --illo-brand-200: var(--primitives-brand-500);
+    --illo-brand-800: var(--primitives-brand-200);
+    --illo-background: var(--primitives-neutral-1000);
+    --illo-lines: var(--primitives-neutral-500);
+    --illo-just-white: #fff;
+    --illo-just-black: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --illo-green: var(--primitives-success-300);
+        --illo-purple: var(--primitives-brand-500);
+        --illo-accent-0: var(--primitives-neutral-1000);
+        --illo-accent-50: var(--primitives-neutral-700);
+        --illo-accent-200: var(--primitives-neutral-500);
+        --illo-accent-800: var(--primitives-neutral-0);
+        --illo-brand-200: var(--primitives-brand-500);
+        --illo-brand-800: var(--primitives-brand-200);
+        --illo-background: var(--primitives-neutral-1000);
+        --illo-lines: var(--primitives-neutral-500);
+        --illo-just-white: #fff;
+        --illo-just-black: #000;
+    }
+}
+
+body {
+    margin: 0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        sans-serif;
+}
+
+html {
+    overflow: hidden;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    background-color: var(--illo-background);
+    border: none;
+}
+
+/* #container {
+    width: 500px;
+    height: 500px;
+} */
+
+.highcharts-markers.particles {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.particles image {
+    transform: scale(0.85, 0.85);
+}
+
+.highcharts-series-30 {
+    clip-path: polygon(0.9% -23px, 101.82% -5.42%, 100.92% 34.6%, 0 33.98%);
+}
+
+.highcharts-series-31 {
+    clip-path: polygon(0.9% -23px, 101.82% -5.42%, 100.92% 34.6%, 0 33.98%);
+}
+
+.highcharts-markers.highcharts-scatter-series.dial {
+    animation-name: turn;
+    animation-duration: 500ms;
+    opacity: 1;
+    animation-delay: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    transform-origin: 50% 50%;
+}
+
+.highcharts-markers.highcharts-scatter-series.dial2 {
+    animation-name: turn2;
+    opacity: 0;
+    animation-duration: 1600ms;
+    animation-delay: 1500ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    transform-origin: 50% 50%;
+}
+
+.highcharts-markers.highcharts-scatter-series.dial {
+    transform: translate(1%, 35%) rotate(-90deg);
+}
+
+.highcharts-markers.highcharts-scatter-series.dial2 {
+    transform: translate(0.5%, 35%) rotate(-12deg);
+}
+
+.highcharts-pie-series .wedge2 {
+    fill: #201836;
+}
+
+.highcharts-scatter-series.squares2 .highcharts-point {
+    fill: #201836;
+}
+
+.highcharts-scatter-series.squares .highcharts-point {
+    fill: #201836;
+}
+
+.highcharts-scatter-series.squares .highcharts-point:nth-of-type(1) {
+    transition: fill 1s;
+}
+
+.highcharts-scatter-series.squares .highcharts-point:nth-of-type(4) {
+    transition: fill 1s;
+}
+
+.highcharts-scatter-series.squares .highcharts-point:nth-of-type(2) {
+    transition: fill 3s;
+}
+
+.highcharts-scatter-series.squares .highcharts-point:nth-of-type(5) {
+    transition: fill 3s;
+}
+
+.highcharts-scatter-series.squares .highcharts-point:nth-of-type(3) {
+    transition: fill 4s;
+}
+
+.highcharts-scatter-series.squares .highcharts-point:nth-of-type(6) {
+    transition: fill 4s;
+}
+
+@keyframes turn {
+    0% {
+        transform: translate(1%, 35%) rotate(-90deg);
+        transform-origin: 50% 50%;
+    }
+
+    100% {
+        transform: translate(0.5%, 35%) rotate(-12deg);
+        transform-origin: 50% 50%;
+    }
+}
+
+@keyframes turn2 {
+    0% {
+        transform: translate(0.5%, 35%) rotate(-12deg);
+        transform-origin: 50% 50%;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(0%, 35%) rotate(80deg);
+        transform-origin: 50% 50%;
+        opacity: 1;
+    }
+}
+
+@media screen  and (min-width: 400px) {
+    /* .particles image {
+        transform: scale(0.9, 0.9);
+    } */
+
+    .highcharts-markers.highcharts-scatter-series.dial {
+        transform: translate(1%, 36%) rotate(-93deg);
+    }
+
+    .highcharts-markers.highcharts-scatter-series.dial2 {
+        transform: translate(0.5%, 37%) rotate(-12deg);
+    }
+
+    @keyframes turn {
+        0% {
+            transform: translate(1%, 36%) rotate(-93deg);
+            transform-origin: 50% 50%;
+        }
+
+        100% {
+            transform: translate(0.5%, 37%) rotate(-12deg);
+            transform-origin: 50% 50%;
+        }
+    }
+
+    @keyframes turn2 {
+        0% {
+            transform: translate(0.5%, 37%) rotate(-12deg);
+            transform-origin: 50% 50%;
+            opacity: 1;
+        }
+
+        100% {
+            transform: translate(0%, 37%) rotate(80deg);
+            transform-origin: 50% 50%;
+            opacity: 1;
+        }
+    }
+}
+
+@media screen  and (min-width: 500px) {
+    /* .particles image {
+        transform: scale(0.9, 0.9);
+    } */
+
+    .highcharts-markers.highcharts-scatter-series.dial {
+        transform: translate(1%, 37%) rotate(-95deg);
+    }
+
+    .highcharts-markers.highcharts-scatter-series.dial2 {
+        transform: translate(0.5%, 37%) rotate(-12deg);
+    }
+
+    @keyframes turn {
+        0% {
+            transform: translate(1%, 37%) rotate(-95deg);
+            transform-origin: 50% 50%;
+        }
+
+        100% {
+            transform: translate(0.5%, 37%) rotate(-12deg);
+            transform-origin: 50% 50%;
+        }
+    }
+
+    @keyframes turn2 {
+        0% {
+            transform: translate(0.5%, 37%) rotate(-12deg);
+            transform-origin: 50% 50%;
+            opacity: 1;
+        }
+
+        100% {
+            transform: translate(0%, 38%) rotate(80deg);
+            transform-origin: 50% 50%;
+            opacity: 1;
+        }
+    }
+}

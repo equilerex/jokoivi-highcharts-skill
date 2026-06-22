@@ -1,0 +1,223 @@
+---
+sidebar_label: "Installation"
+---
+
+# Highcharts Grid installation
+
+Highcharts Grid ships in two editions that share the same API but differ in feature scope and licensing.
+
+| Edition | Package | Highlights |
+| --- | --- | --- |
+| **Grid Lite** | `@highcharts/grid-lite` | **Free**. Focused on viewing and interacting with data. |
+| **Grid Pro** | `@highcharts/grid-pro` | **Commercial**. Adds editing, validation, sparklines, events and advanced workflows. |
+
+Start with Lite if you only need read-only, interactive tables. Switch to Pro when you need editing, data validation, events or sparklines.
+
+## Try before installing
+
+See Grid in action without installing anything:
+
+- **Try in CodePen →**
+- **Try in JSFiddle →**
+
+## Installation
+
+Get started with Highcharts Grid using a bundler ([Option 1](#option-1-npm--bundlers)), a CDN ([Option 2](#option-2-cdn--static)), or self-hosted files ([Option 3](#option-3-download-and-self-host)).
+
+### Option 1: npm and bundlers
+
+Best for projects using Vite, Webpack, Next.js, or other modern build tools.
+
+**Step 1: Install**
+```bash
+npm install @highcharts/grid-lite
+```
+
+**Step 2: Add a container to your HTML**
+```html
+<div id="container"></div>
+```
+
+**Step 3: Create the grid**
+```js
+import Grid from '@highcharts/grid-lite/es-modules/masters/grid-lite.src.js';
+import '@highcharts/grid-lite/css/grid-lite.css';
+
+Grid.grid('container', {
+    data: {
+        columns: {
+            product: ['Apple', 'Pear', 'Plum', 'Banana'],
+            price: [1.5, 2.53, 5, 4.5]
+        }
+    }
+});
+```
+
+> **TIP:** Types are included automatically. No `@types` package is needed.
+
+### Option 2: CDN and static files
+
+Best for quick prototypes, CodePen, JSFiddle, or projects without build tools.
+
+**Grid Lite - Complete HTML:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="@highcharts/grid-lite/grid-lite.js"></script>
+    <link rel="stylesheet" href="@highcharts/grid-lite/css/grid-lite.css" />
+</head>
+<body>
+    <div id="container"></div>
+
+    <script>
+    Grid.grid('container', {
+        data: {
+            columns: {
+                product: ['Apple', 'Pear', 'Plum', 'Banana'],
+                price: [1.5, 2.53, 5, 4.5]
+            }
+        }
+    });
+    </script>
+</body>
+</html>
+```
+
+For Grid Pro, swap the filenames:
+
+```html
+<script src="@highcharts/grid-pro/grid-pro.js"></script>
+<link rel="stylesheet" href="@highcharts/grid-pro/css/grid-pro.css" />
+```
+
+> **TIP:** Want to lock to a specific version? Use: `@highcharts/grid-lite@2.0.0/grid-lite.js`
+
+---
+
+### Option 3: Download and self-host
+
+Best when you need an offline setup or must serve assets from your own domain.
+
+1. Download the latest Grid package from highcharts.com/download.
+2. Place the JS/CSS files on your server.
+3. Reference them directly:
+
+```html
+<script src="/assets/grid/grid-lite.js"></script>
+<link rel="stylesheet" href="/assets/grid/css/grid-lite.css" />
+```
+
+For Grid Pro, swap the filenames:
+
+```html
+<script src="/assets/grid/grid-pro.js"></script>
+<link rel="stylesheet" href="/assets/grid/css/grid-pro.css" />
+```
+
+---
+
+## Use Grid Pro
+
+Switch to Grid Pro for editing, validation, sparklines, and advanced features.
+Note that [Grid Pro requires a Grid Key](./grid/grid-key).
+
+### Install Grid Pro
+
+```bash
+# Basic installation
+npm install @highcharts/grid-pro
+```
+
+### Import and configure
+
+```js
+import Grid from '@highcharts/grid-pro/es-modules/masters/grid-pro.src.js';
+import '@highcharts/grid-pro/css/grid-pro.css';
+
+// Create grid with Pro features
+Grid.grid('container', {
+    gridKey: 'YOUR-GRID-KEY-HERE',
+    data: {
+        columns: {
+            product: ['Apple', 'Pear', 'Plum', 'Banana'],
+            price: [1.5, 2.53, 5, 4.5],
+            inStock: [true, true, false, true]
+        }
+    },
+    columns: [{
+        id: 'product',
+        cells: {
+            editable: true
+        }
+    }, {
+        id: 'price',
+        cells: {
+            editable: true,
+            format: '${value}'
+        }
+    }, {
+        id: 'inStock',
+        cells: {
+            editable: true
+        }
+    }]
+});
+```
+
+## Framework integration
+
+Grid works seamlessly with most major JavaScript frameworks.
+
+### React
+
+**Installation:**
+```bash
+npm install @highcharts/grid-lite-react
+# or
+npm install @highcharts/grid-pro-react
+```
+
+The React package is self-contained, so a single install is enough to render the grid.
+Requires React 18 or higher.
+
+**App.tsx:**
+```tsx
+import { useState } from 'react';
+import { Grid, type GridOptions } from '@highcharts/grid-lite-react';
+
+export default function App() {
+    const [options] = useState<GridOptions>({
+        data: {
+            columns: {
+                name: ['Alice', 'Bob', 'Charlie', 'David'],
+                age: [23, 34, 45, 56],
+                city: ['New York', 'Oslo', 'Paris', 'Tokyo'],
+            }
+        }
+    });
+
+    return <Grid options={options} />;
+}
+```
+
+For Grid Pro, swap the imports to `@highcharts/grid-pro-react` and render
+`<Grid options={options} />`.
+
+See [Highcharts Grid with React](./grid/frameworks/react) for the full guide.
+
+### Other Frameworks
+
+| Framework | Guide |
+| --- | --- |
+| **Vue** | [View Vue Guide →](./grid/frameworks/vue) |
+| **Angular** | [View Angular Guide →](./grid/frameworks/angular) |
+
+## Next steps
+
+Now that Grid is installed, explore what you can build:
+
+- **[Introduction guide](./grid/general)** – Build more complex grids with real data
+- **[Understanding Grid](./grid/understanding-grid)** – Configure columns, data sources, and events
+- **[Theming guide](./grid/theming/index)** – Customize the look and feel
+- **API reference** – Complete options and methods documentation

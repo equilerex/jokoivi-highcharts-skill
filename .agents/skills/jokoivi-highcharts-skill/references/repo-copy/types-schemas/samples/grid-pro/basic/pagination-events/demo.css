@@ -1,0 +1,13 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+#container {
+    padding: 8px;
+}
+
+.content {
+    padding: 8px;
+}
+
+.content > div {
+    margin-bottom: 5px;
+}

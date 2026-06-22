@@ -1,0 +1,30 @@
+/* Requires external Highcharts CSS to be installed locally */
+/* Requires external Highcharts CSS to be installed locally */
+
+#csv {
+    display: none;
+}
+
+/* LARGE */
+@media (max-width: 1200px) {
+    #dashboard-col-0,
+    #dashboard-col-1 {
+        flex: 1 1 50%;
+    }
+}
+
+/* MEDIUM */
+@media (max-width: 992px) {
+    #dashboard-col-0,
+    #dashboard-col-1 {
+        flex: 1 1 50%;
+    }
+}
+
+/* SMALL */
+@media (max-width: 576px) {
+    #dashboard-col-0,
+    #dashboard-col-1 {
+        flex: 1 1 100%;
+    }
+}

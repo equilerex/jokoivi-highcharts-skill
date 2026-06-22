@@ -1,0 +1,16 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+body {
+    background: var(--highcharts-background-color);
+    color: var(--highcharts-neutral-color-100);
+}
+
+#container {
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-treegrid-node-level-1 {
+    font-size: 13px;
+    font-weight: bold;
+}

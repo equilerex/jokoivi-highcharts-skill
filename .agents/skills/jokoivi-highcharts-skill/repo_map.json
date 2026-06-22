@@ -1,0 +1,9 @@
+{
+  "base_path": "./references/repo-copy/types-schemas",
+  "directories": {
+    "ts": "/",
+    "samples": "/samples",
+    "docs": "/docs"
+  },
+  "description": "Index mapping for Highcharts skill source files."
+}

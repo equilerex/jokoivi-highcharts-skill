@@ -1,0 +1,40 @@
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        sans-serif;
+    background: #252931;
+    color: white;
+}
+
+#container {
+    min-width: 320px;
+    height: 90vh;
+    min-height: 600px;
+}
+
+.highcharts-figure {
+    min-width: 320px;
+    margin: 0;
+}
+
+.highcharts-description {
+    padding: 0 10px;
+}
+
+tspan {
+    fill: inherit;
+}
+
+@media screen and (max-width: 600px) {
+    #container {
+        height: 400px;
+    }
+}

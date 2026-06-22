@@ -1,0 +1,1 @@
+Exported chart should have red columns, showing that custom CSS is active during export.

@@ -1,0 +1,6 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+#container {
+    background-color: var(--hcg-background);
+    padding: 8px;
+}

@@ -1,0 +1,11 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+#container {
+    height: 400px;
+}
+
+.highcharts-background {
+    fill: #efefef;
+    stroke: #a4edba;
+    stroke-width: 2px;
+}

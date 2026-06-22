@@ -1,0 +1,18 @@
+/* Requires external Highcharts CSS to be installed locally */
+/* Requires external Highcharts CSS to be installed locally */
+
+#csv {
+    display: none;
+}
+
+.custom-1 {
+    background-color: #8cda58;
+    padding: 20px 10px;
+}
+
+.custom-rest {
+    background-color: #e295ee;
+    padding: 20px 5px 5px;
+    border-radius: 5px;
+    box-shadow: 4px 6px 10px #0000008c;
+}

@@ -1,0 +1,26 @@
+body,
+#demo-content {
+    background-color: var(--highcharts-background-color);
+    margin: 0;
+    padding: 0;
+    color: var(--highcharts-neutral-color-100);
+}
+
+a,
+a:hover {
+    color: var(--highcharts-neutral-color-100);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.chart-container {
+    width: 100%;
+    height: 260px !important;
+    overflow: hidden;
+}
+
+.highcharts-text-outline {
+    stroke-width: 0;
+}

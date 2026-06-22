@@ -1,0 +1,9 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+.highcharts-dashboards-component {
+    text-align: center;
+}
+
+.highcharts-dashboards-component img {
+    height: 200px;
+}

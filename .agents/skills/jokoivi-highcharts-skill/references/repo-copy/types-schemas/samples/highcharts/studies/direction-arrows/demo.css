@@ -1,0 +1,30 @@
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        sans-serif;
+}
+
+.container {
+    height: 350px;
+    width: 500px;
+    margin: 0 auto;
+}
+
+/* Add arrows to lines (using SVG markers) */
+.highcharts-name-line1,
+.highcharts-arrows {
+    marker-end: url(#head);
+    marker-start: url(#tail);
+}
+
+.highcharts-name-line2 {
+    marker-start: url(#tail);
+}

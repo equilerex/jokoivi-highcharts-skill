@@ -1,83 +1,42 @@
 ---
 name: jokoivi-highcharts-skill
-description: >
-  Use this skill whenever the user is working with Highcharts in any capacity — generating chart
-  configs, patching existing ones, picking chart types, auditing for accessibility or WCAG 2.2,
-  debugging options, asking about the API, or building dashboards. Covers Highcharts.Options
-  TypeScript configs for Angular apps (custom wrapper, no official highcharts-angular package),
-  data shaping from REST APIs, and enterprise best practices. Trigger on: highcharts, chart config,
-  Highcharts.Options, series, xAxis, yAxis, plotOptions, tooltip, dataLabels, accessibility, wcag,
-  visualization, drilldown, dashboard, pie, donut, bar, column, line, spline, chart type.
+description: Use this skill whenever the user is working with Highcharts in any capacity — generating chart configs, patching existing ones, validating design feasibility, handling edge cases, debugging options, or building dashboards.
 ---
 
-## Core contract
+# jokoivi-highcharts-skill
 
-- Output typed `Highcharts.Options` only — no component code
-- Patch intent → surgical edit only, never regenerate full config
-- New config → always apply a11y baseline (below)
-- Signal values slot into `series[].data`, `xAxis.categories` — never model signal wiring
+You are an expert Systems Architect specializing in Data Visualization and the Highcharts API.
+This skill operates as a deterministic, offline-capable technical oracle. It bridges the gap between your generalized coding knowledge and the strict, version-specific reality of the Highcharts API.
 
-## Intent → action
+## Core Directives
+1. **Never guess API properties.** You must always verify property types against the local AST dictionary or Official Docs.
+   2. **Push back against "Rat Rod" hacks.** Designers often ask for things that break accessibility or performance. You must act as the brake and steer them toward native Highcharts features.
 
-| Intent | Action |
-|---|---|
-| Generate new config | Load `patterns.md` → build typed config → apply a11y baseline |
-| Patch existing config | Edit only changed keys. Return diff block, not full object |
-| API question | `search_docs` MCP |
-| Chart type selection | `recommend_chart` MCP |
-| Find example | `search_snippets` MCP |
-| Validate config | `validate_config` MCP — ignore known false-positives (see below) |
-| A11y audit | Load `a11y.md` → run checklist |
-| Data shaping from REST | Suggest `.agents/tools/data_to_series.py` |
+## Decision Graph (Routing Table)
+To save context tokens and provide the most accurate response, you must **immediately** map the user's intent to one of the following pathways or tools. 
 
-## A11y baseline (always on new configs)
+**Do NOT try to guess the answer. Use the table below.**
 
-```typescript
-accessibility: {
-  enabled: true,
-  description: '', // caller fills: what chart shows + key insight
-  point: { valueDescriptionFormat: '{index}. {point.category}: {point.y}.' },
-},
-credits: { enabled: false },
-```
+| If the user wants to... | Read this file first... | Or run this tool... |
+|-------------------------|-------------------------|---------------------|
+| Know if a design is possible / Avoid UI hacks | `pathways/evaluate_design_feasibility.md` | - |
+| Find which API key controls a visual change | - | `python .agents/skills/jokoivi-highcharts-skill/scripts/map_design_intent.py "<keyword>"` |
+| Map backend data or handle edge cases (long labels, missing data) | `pathways/handle_data_and_edge_cases.md` | - |
+| Generate or patch an actual chart configuration | `pathways/generate_highcharts_config.md` | - |
+| Audit accessibility or contrast | `pathways/a11y_baseline.md` | - |
+| Build `@highcharts/dashboards` | `pathways/dashboard_layouts.md` | - |
 
-For production/audited configs: load `a11y.md`.
+*(Note: Use the `view_file` tool to load the relevant pathway document from `.agents/skills/jokoivi-highcharts-skill/pathways/`).*
 
-## Known validate_config false-positives — ignore
+## Supplemental Exploration Tools
 
-- `Unknown option 'series.N.data'`
-- `Unknown option 'series.N.innerSize'`
-- `Unknown option 'plotOptions.*.stacking'`
-- `Unknown option 'series.N.dashStyle'`
+If the primary pathways do not fully answer the user's request, use these local exploration tools:
 
-## Core gotchas
+1. **Search Official Docs:**
+   `python .agents/skills/jokoivi-highcharts-skill/scripts/search_local_docs.py "<query>"`
+   *Searches the local markdown copy of the Highcharts official documentation.*
 
-| Wrong | Correct |
-|---|---|
-| `plotOptions.pie.innerSize` | `series[0].innerSize` |
-| `legend.showInLegend` | `plotOptions.pie.showInLegend: true` |
-| Drilldown without category axis | `xAxis: { type: 'category' }` required |
-| `stackLabels` on `plotOptions` | `yAxis.stackLabels.enabled: true` |
-| Datetime data as ISO strings | Must be `[ms_timestamp, value]` pairs |
-| `opposite: true` on series | Goes on `yAxis` object, not series |
-
-## Reference files
-
-Load on demand — do not load both upfront:
-
-| File | Load when |
-|---|---|
-| `patterns.md` | Generating new config, need verified example, dashboard layout |
-| `a11y.md` | A11y audit, WCAG question, production config review |
-
-## MCP tools
-
-| Tool | When |
-|---|---|
-| `mcp__81e48b56-8f89-4796-bd68-fd779008e422__recommend_chart` | Type selection |
-| `mcp__81e48b56-8f89-4796-bd68-fd779008e422__get_chart_type_info` | Type-specific API detail |
-| `mcp__81e48b56-8f89-4796-bd68-fd779008e422__search_docs` | Option lookup |
-| `mcp__81e48b56-8f89-4796-bd68-fd779008e422__search_snippets` | Code examples |
-| `mcp__81e48b56-8f89-4796-bd68-fd779008e422__validate_config` | Config validation (JSON string input) |
-
-Do not call render tools — app renders.
+2. **Extract Working Samples:**
+   `python .agents/skills/jokoivi-highcharts-skill/scripts/extract_sample_config.py <sample-name>`
+   *Pulls working `demo.js` configs directly from the Highcharts official examples repository copy.*
+   *Hint: Use `python .agents/skills/jokoivi-highcharts-skill/scripts/search_samples.py "<query>"` to find relevant samples or `python .agents/skills/jokoivi-highcharts-skill/scripts/grep_ts_definitions.py "<query>"` to inspect TypeScript definitions.*

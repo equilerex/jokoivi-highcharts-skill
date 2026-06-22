@@ -1,0 +1,261 @@
+// Issue #13310, #12736
+// Mousing over tooltip should not dismiss it, move it, or change points.
+QUnit.test('Stick on hover tooltip (#13310, #12736)', function (assert) {
+    [false, true].forEach(function (useHTML) {
+        Highcharts.chart(
+            'container',
+            {
+                chart: {
+                    useHTML: useHTML
+                },
+                series: [
+                    {
+                        type: 'line',
+                        data: [1, 3, 2]
+                    },
+                    {
+                        type: 'line',
+                        data: [1.1, 3.1, 2.1]
+                    }
+                ],
+                tooltip: {
+                    animation: false,
+                    hideDelay: 0,
+                    stickOnContact: true
+                }
+            },
+            function (chart) {
+                var controller = new TestController(chart),
+                    series1Point = chart.series[0].points[0],
+                    series1PointPosition = {
+                        x: Math.round(chart.plotLeft + series1Point.plotX),
+                        y: Math.round(chart.plotTop + series1Point.plotY)
+                    },
+                    series2Point = chart.series[1].points[0],
+                    series2PointPosition = {
+                        x: Math.round(chart.plotLeft + series2Point.plotX),
+                        y: Math.round(chart.plotTop + series2Point.plotY)
+                    },
+                    tooltip = chart.tooltip;
+
+                assert.strictEqual(
+                    tooltip.isHidden,
+                    true,
+                    'Tooltip should be hidden.'
+                );
+
+                controller.setPosition(
+                    series1PointPosition.x,
+                    series1PointPosition.y
+                );
+                controller.moveTo(
+                    series1PointPosition.x,
+                    series1PointPosition.y
+                );
+
+                assert.strictEqual(
+                    !tooltip.isHidden,
+                    true,
+                    'Tooltip should be visible.'
+                );
+
+                assert.deepEqual(
+                    tooltip.label.text.element.textContent.split('\u200B'),
+                    ['0', '\u25CF Series 1: 1', ''],
+                    'Tooltip should have label text of first series.'
+                );
+
+                controller.moveTo(
+                    series2PointPosition.x,
+                    series2PointPosition.y
+                );
+
+                assert.strictEqual(
+                    !tooltip.isHidden,
+                    true,
+                    'Tooltip should be visible.'
+                );
+
+                // We haven't found out why it fails on Firefox (#16907)
+                if (navigator.userAgent.indexOf('Firefox') === -1) {
+                    assert.deepEqual(
+                        tooltip.label && tooltip.label.text.element.textContent
+                            .split('\u200B'),
+                        ['0', '\u25CF Series 1: 1', ''],
+                        'Tooltip should have label text of first series. (2)'
+                    );
+                }
+
+                controller.moveTo(chart.plotLeft, chart.plotTop);
+                controller.moveTo(
+                    series2PointPosition.x,
+                    series2PointPosition.y
+                );
+
+                assert.strictEqual(
+                    !tooltip.isHidden,
+                    true,
+                    'Tooltip should be visible.'
+                );
+
+                assert.deepEqual(
+                    tooltip.label && tooltip.label.text.element.textContent
+                        .split('\u200B'),
+                    ['0', '\u25CF Series 2: 1.1', ''],
+                    'Tooltip should have label text of second series.'
+                );
+            }
+        );
+    });
+});
+
+// Issue #12885
+// Tooltip stickOnContact and followPointer
+QUnit.test(
+    'Do not stick on hover tooltip following pointer (#12885)',
+    function (assert) {
+        const clock = TestUtilities.lolexInstall();
+
+        const chart = Highcharts.chart('container', {
+            chart: {
+                width: 600
+            },
+            series: [
+                {
+                    type: 'pie',
+                    data: [4, 2, 1]
+                }
+            ],
+            tooltip: {
+                animation: false,
+                followPointer: true,
+                hideDelay: 0,
+                stickOnContact: true
+            }
+        });
+        var controller = new TestController(chart),
+            pointBox = chart.series[0].points[0].graphic.getBBox(),
+            pointerPosition = {
+                x: chart.plotLeft + pointBox.x + pointBox.width / 2,
+                y: chart.plotTop + pointBox.y + pointBox.height / 2
+            },
+            tooltip = chart.tooltip;
+
+        controller.moveTo(pointerPosition.x, pointerPosition.y);
+
+        var tooltipPosition1 = {
+            x: tooltip.label.x,
+            y: tooltip.label.y
+        };
+
+        controller.moveTo(pointerPosition.x + 1, pointerPosition.y + 1);
+
+        var tooltipPosition2 = {
+            x: tooltip.label.x,
+            y: tooltip.label.y
+        };
+
+        assert.close(
+            tooltipPosition2.x,
+            // Util reports +1, while Playwright, after merging master into the
+            // v13 branch, reports +2. Not able to find out why.
+            tooltipPosition1.x + 1.5,
+            0.5,
+            'Tooltip should move horizontally with pointer movement'
+        );
+
+        assert.strictEqual(
+            tooltipPosition2.y,
+            tooltipPosition1.y + 1,
+            'Tooltip should move vertically with pointer movement'
+        );
+
+        chart.update({
+            tooltip: {
+                followPointer: false
+            }
+        }, false);
+
+        chart.series[0].update({
+            type: 'column',
+            tooltip: {
+                followPointer: true
+            }
+        }, false);
+
+        chart.addSeries({
+            type: 'scatter',
+            data: [0]
+        });
+
+        const columnBox = chart.series[0].points[0].graphic.getBBox(),
+            pointBox2 = chart.series[1].points[0].graphic.getBBox();
+
+        controller.moveTo(
+            columnBox.x + chart.plotLeft + (columnBox.width / 2),
+            columnBox.y + chart.plotTop + (columnBox.height / 2)
+        );
+
+        controller.moveTo(
+            pointBox2.x + chart.plotLeft + (pointBox2.width / 2),
+            pointBox2.y + chart.plotTop + (pointBox2.height / 2)
+        );
+
+        controller.moveTo(
+            columnBox.x + chart.plotLeft + (columnBox.width / 2),
+            columnBox.y + chart.plotTop + (columnBox.height / 2)
+        );
+        assert.notEqual(
+            tooltip.label.visibility,
+            'hidden',
+            `There should be no errors in the console and tooltip should
+            be visible, when moving mouse between one series with
+            followPointer set to true and second series set to false
+            (#18693).`
+        );
+
+        // #23303
+        chart.update({
+            series: [{
+                type: 'column',
+                data: [1],
+                tooltip: {
+                    followPointer: false
+                }
+            }],
+            tooltip: {
+                stickOnContact: true,
+                useHTML: true,
+                hideDelay: 500
+            }
+        }, true, true);
+
+        const column = chart.series[0].points[0].shapeArgs,
+            columnX = chart.plotLeft + column.x + column.width / 2,
+            columnY = chart.plotTop + column.y + column.height / 2;
+
+        controller.moveTo(columnX, columnY);
+
+        setTimeout(() => {
+            assert.ok(!tooltip.isHidden, `Tooltip visible after
+            hovering point.`);
+
+            const tooltipBBox = tooltip.label.element.getBBox(),
+                tooltipX = tooltip.label.x + tooltipBBox.width / 2,
+                tooltipY = tooltip.label.y + tooltipBBox.height / 2;
+
+            controller.moveTo(columnX + 10, columnY);
+            controller.moveTo(tooltipX, tooltipY);
+
+            setTimeout(() => {
+                assert.ok(
+                    !tooltip.isHidden,
+                    `Tooltip should remain visible when leaving point
+                    and entering tooltip.`
+                );
+            }, 300);
+        }, 100);
+
+        TestUtilities.lolexUninstall(clock);
+    }
+);

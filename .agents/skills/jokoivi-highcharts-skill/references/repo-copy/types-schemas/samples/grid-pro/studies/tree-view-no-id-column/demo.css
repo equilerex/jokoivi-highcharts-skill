@@ -1,0 +1,15 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+.demo {
+    padding: 12px;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+#container {
+    height: 420px;
+}

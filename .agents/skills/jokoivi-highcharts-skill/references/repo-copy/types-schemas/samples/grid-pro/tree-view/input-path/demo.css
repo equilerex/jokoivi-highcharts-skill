@@ -1,0 +1,14 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+.controls {
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+#container {
+    min-height: 360px;
+    padding: 8px;
+}

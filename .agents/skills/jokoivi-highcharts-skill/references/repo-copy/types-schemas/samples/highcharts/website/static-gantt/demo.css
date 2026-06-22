@@ -1,0 +1,288 @@
+/* Requires external Highcharts CSS to be installed locally */
+
+:root,
+.highcharts-light {
+    --illo-green: #a7f3d0;
+    --illo-purple: #8791ff;
+    --illo-accent-teal: #6699a1;
+}
+
+.highcharts-dark {
+    --illo-green: #6ee7b7;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --illo-green: #6ee7b7;
+    }
+}
+
+html {
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+}
+
+/* CHART */
+
+.chart-container .thick {
+    stroke-width: 1;
+    stroke: white;
+    color: white;
+    transition: all 2s;
+}
+
+.chart-container .thin {
+    stroke-width: 1;
+    stroke: white;
+    color: white;
+    transition: all 2s;
+}
+
+.chart-container .transparent {
+    opacity: 1;
+    stroke-width: 1;
+    stroke: white;
+    color: white;
+    transition: all 2s;
+}
+
+.chart-container .highcharts-area,
+.chart-container .highcharts-arearange {
+    fill-opacity: 1;
+    stroke: transparent;
+}
+
+.chart-container .highcharts-title,
+.chart-container .highcharts-subtitle {
+    fill: var(--highcharts-neutral-color-100);
+    stroke: var(--highcharts-neutral-color-100);
+    opacity: 1;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.chart-container .highcharts-subtitle {
+    opacity: 0;
+}
+
+.chart-container .highcharts-title {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.chart-container .line {
+    color: var(--highcharts-neutral-color-10);
+    stroke: var(--highcharts-neutral-color-10);
+    stroke-width: 1px;
+}
+
+.chart-container .highcharts-tick,
+.chart-container .highcharts-axis-line {
+    stroke: var(--highcharts-neutral-color-20);
+}
+
+.chart-container .highcharts-minor-grid-line {
+    stroke: var(--highcharts-neutral-color-20);
+    opacity: 20%;
+    stroke-dasharray: 2px;
+}
+
+.chart-container .highcharts-axis-labels.highcharts-yaxis-labels {
+    font-size: 1em;
+    font-weight: 300;
+}
+
+.chart-container .highcharts-point-connecting-path-start-marker {
+    fill: var(--highcharts-neutral-color-100);
+}
+
+.chart-container .highcharts-axis-labels {
+    fill: var(--highcharts-neutral-color-100);
+    cursor: default;
+    font-size: 0.7rem;
+}
+
+.chart-container .highcharts-data-label text,
+.chart-container text.highcharts-data-label {
+    fill: var(--highcharts-neutral-color-100);
+    font-weight: 400;
+}
+
+.chart-container .highcharts-point-select .highcharts-color-0,
+.chart-container .highcharts-color-0.highcharts-point-select,
+.chart-container .highcharts-point-select .highcharts-color-1,
+.chart-container .highcharts-point-select .highcharts-color-2 {
+    fill: var(--highcharts-background-color) !important;
+    stroke-width: 2px !important;
+}
+
+.chart-container .highcharts-color-0 {
+    fill: var(--illo-purple);
+    stroke: var(--illo-purple);
+}
+
+.chart-container .highcharts-point-connecting-path.highcharts-color-0,
+.chart-container .highcharts-point-connecting-path.highcharts-color-1,
+.chart-container .highcharts-point-connecting-path.highcharts-color-2 {
+    fill: transparent;
+}
+
+.chart-container .highcharts-color-1 {
+    fill: #e2a13f;
+    stroke: #e2a13f;
+}
+
+.chart-container .highcharts-color-2 {
+    fill: var(--illo-green);
+    stroke: var(--illo-green);
+}
+
+.chart-container .highcharts-container {
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    line-height: normal;
+    z-index: 0;
+    -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 12px;
+    user-select: none;
+    touch-action: manipulation;
+    outline: none;
+}
+
+.chart-container .highcharts-background {
+    fill: var(--highcharts-neutral-color-3);
+    transition: all 1s;
+}
+
+.chart-container .highcharts-background.on {
+    fill: var(--highcharts-neutral-color-3);
+}
+
+.chart-container .highcharts-grid-line {
+    fill: none;
+    stroke: transparent;
+    z-index: 40;
+}
+
+.chart-container .highcharts-xaxis-grid .highcharts-grid-line {
+    stroke-width: 1px;
+}
+
+.chart-container .highcharts-plot-band,
+.highcharts-pane {
+    fill: var(--highcharts-highlight-color-10);
+    fill-opacity: 1;
+    z-index: 30;
+}
+
+.chart-container .highcharts-legend-series-active g.highcharts-series:not(.highcharts-series-hover),
+.chart-container .highcharts-legend-point-active .highcharts-point:not(.highcharts-point-hover),
+.chart-container .highcharts-legend-series-active .highcharts-markers:not(.highcharts-series-hover),
+.chart-container .highcharts-legend-series-active .highcharts-data-labels:not(.highcharts-series-hover) {
+    opacity: 1;
+}
+
+.chart-container .highcharts-series-inactive {
+    opacity: 1;
+    transition: opacity 50ms;
+}
+
+.chart-container .highcharts-tooltip-0 {
+    filter: drop-shadow(5px 7px 13px rgb(0 0 0 / 14%)) !important;
+    box-shadow: 5px 7px 13px 1px rgb(0 0 0 / 14%);
+}
+
+.chart-container .highcharts-tooltip-box,
+.highcharts-tooltip-container .highcharts-tooltip.tip .highcharts-label-box {
+    stroke-width: 1;
+    border: none;
+    stroke: var(--highcharts-neutral-color-100);
+    fill: var(--highcharts-background-color);
+    fill-opacity: 1;
+}
+
+.chart-container .highcharts-data-label-box {
+    fill: var(--highcharts-background-color);
+    stroke-width: 0;
+}
+
+.chart-container .highcharts-tooltip text {
+    fill: var(--highcharts-neutral-color-100);
+}
+
+.chart-container .highcharts-tooltip {
+    z-index: 100;
+}
+
+.chart-container .highcharts-graph {
+    fill: unset;
+    stroke-width: unset;
+    stroke: unset;
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+}
+
+#gantt {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    background-color: var(--highcharts-neutral-color-10);
+}
+
+/* #gantt {
+    width: 500px;
+    height: 500px;
+} */
+
+#gantt .hide {
+    opacity: 0;
+}
+
+#gantt .show {
+    opacity: 1;
+}
+
+#gantt .highcharts-plot-background {
+    fill: var(--highcharts-background-color);
+    stroke: transparent;
+}
+
+#gantt .cover {
+    fill: var(--illo-accent-50);
+    stroke: transparent;
+}
+
+#gantt .foreground {
+    fill: var(--highcharts-neutral-color-10);
+    stroke: transparent;
+}
+
+#gantt .gantt-label {
+    width: 100px;
+    padding: 2px;
+    font-weight: bold;
+    position: absolute;
+    left: 15px;
+    top: -25px;
+    color: var(--text-secondary);
+}
+
+#gantt .day-label {
+    position: absolute;
+    top: -8px;
+    text-align: center;
+    background-color: transparent;
+    color: var(--text-primary);
+    font-size: 0.7rem;
+}
+
+.highcharts-tooltip-container {
+    font-family: "IBM Plex Sans", sans-serif;
+}

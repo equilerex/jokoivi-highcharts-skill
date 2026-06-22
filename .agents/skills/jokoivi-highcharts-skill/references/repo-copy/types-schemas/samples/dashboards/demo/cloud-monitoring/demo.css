@@ -1,0 +1,228 @@
+/* Requires external Highcharts CSS to be installed locally */
+/* Requires external Highcharts CSS to be installed locally */
+/* Requires external Highcharts CSS to be installed locally */
+
+.highcharts-description {
+    background: light-dark(#f2f6f2, #323232);
+    border-radius: 0 4px 4px 0;
+    border-left: 2px solid light-dark(#1d6aff, #fff);
+    font-size: 0.8rem;
+    font-style: italic;
+    padding: 8px 16px;
+    margin: 2em 10px 1em;
+}
+
+.cloud-monitoring-data-controls {
+    background-color: var(--highcharts-neutral-color-10);
+    border-bottom: 1px solid #a5abb1;
+    padding: 20px 15px;
+}
+
+:root,
+.highcharts-light {
+    /* Colors for data series and points */
+    --highcharts-color-0: #33a29d;
+    --highcharts-color-2: #fe9d00;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        sans-serif;
+    background: var(--highcharts-neutral-color-5);
+    color: var(--highcharts-neutral-color-100);
+}
+
+.highcharts-dashboards-wrapper {
+    background-color: var(--highcharts-neutral-color-10);
+    min-height: 1000px;
+}
+
+.highcharts-dashboards-cell > .highcharts-dashboards-component {
+    border-radius: 15px;
+    padding: 10px;
+    text-align: left;
+}
+
+.highcharts-dashboards-component-title {
+    font-size: 1.2em;
+    text-align: left;
+}
+
+#instance-details .highcharts-dashboards-component-content p {
+    display: inline-block;
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+#instance-details .highcharts-dashboards-component-content span {
+    width: 40px;
+    height: 40px;
+    background-size: 32px 32px;
+    border-radius: 5px;
+    margin: 10px 15px 10px 10px;
+    float: left;
+}
+
+@media (prefers-color-scheme: dark) {
+    .highcharts-dashboards-wrapper,
+    .cloud-monitoring-data-controls {
+        background-color: var(--highcharts-neutral-color-10);
+    }
+
+    .cloud-monitoring-data-controls {
+        color: #fff;
+    }
+}
+
+#instance-details .highcharts-dashboards-component-html-content img {
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 10px;
+    border-radius: 3px;
+}
+
+#instance-details .highcharts-dashboards-component-html-content p {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#instances-table .highcharts-grid-row {
+    cursor: pointer;
+}
+
+#instances-table .highcharts-grid-row.current {
+    background-color: var(--highcharts-neutral-color-10);
+    pointer-events: none;
+}
+
+#instances-table .highcharts-grid-hovered-row {
+    background-color: var(--highcharts-neutral-color-10);
+}
+
+#instances-table .highcharts-grid-row td[data-column-id="HealthIndicator"] {
+    text-align: center;
+}
+
+#instances-table .highcharts-grid-row img {
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+#instances-table .highcharts-grid-table th {
+    height: 35px;
+}
+
+#instances-table .highcharts-grid-table {
+    border-width: 1px 0 0;
+}
+
+.health-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
+    padding-top: 15px;
+}
+
+.health-wrapper {
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    margin-top: 15px;
+}
+
+.highcharts-Warning-icon {
+    background: url("https://www.highcharts.com/samples/graphics/dashboards/cloud-monitoring/warning-ico.svg") 50% 50% no-repeat;
+    background-size: 64px 64px;
+}
+
+.highcharts-Critical-icon {
+    background: url("https://www.highcharts.com/samples/graphics/dashboards/cloud-monitoring/critical-ico.png") 50% 50% no-repeat;
+    background-size: 64px 64px;
+}
+
+.highcharts-OK-icon {
+    background: url("https://www.highcharts.com/samples/graphics/dashboards/cloud-monitoring/ok-ico.svg") 50% 50% no-repeat;
+    background-size: 64px 64px;
+}
+
+.highcharts-dashboards-component-kpi-value {
+    display: none;
+}
+
+#instances-table {
+    height: 400px;
+}
+
+#cpu,
+#memory {
+    height: 200px;
+}
+
+#health,
+#disk {
+    height: 195px;
+}
+
+#disk-opt,
+#network-opt {
+    height: 300px;
+}
+
+#cpu-utilization,
+#disk-usage {
+    height: 400px;
+}
+
+/* MEDIUM */
+@media (max-width: 992px) {
+    #instance,
+    #zone,
+    #ami,
+    #os,
+    #cpu,
+    #memory,
+    #health,
+    #disk {
+        flex: 1 1 50%;
+    }
+
+    #instances-table,
+    #disk-usage,
+    #cpu-utilization,
+    #kpi-wrapper {
+        flex: 1 1 100%;
+    }
+
+    #instances-table,
+    #cpu-utilization {
+        height: 300px;
+    }
+}
+
+/* SMALL */
+@media (max-width: 576px) {
+    #instance,
+    #zone,
+    #ami,
+    #os,
+    #disk-opt,
+    #network-opt,
+    #cpu,
+    #memory,
+    #health,
+    #disk {
+        flex: 1 1 100%;
+    }
+}
