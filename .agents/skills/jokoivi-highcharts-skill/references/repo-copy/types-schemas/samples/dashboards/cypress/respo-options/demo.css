@@ -1,8 +1,0 @@
-/* Requires external Highcharts CSS to be installed locally */
-
-@media (max-width: 576px) {
-    #cell-1,
-    #cell-2 {
-        flex: 1 1 100%;
-    }
-}

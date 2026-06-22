@@ -1,8 +1,0 @@
-/* Requires external Highcharts CSS to be installed locally */
-/* Requires external Highcharts CSS to be installed locally */
-
-@media screen and (max-width: 576px) {
-    .highcharts-dashboards-cell {
-        flex: 1 1 100%;
-    }
-}
